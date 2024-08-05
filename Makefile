@@ -1,12 +1,16 @@
 BINARY=./tmp/main
-
+CMD=./cmd/main.go
 test:
 	@echo "Running tests..."
 	@go test -v ./...
 
+run-air: build
+	@echo "Running the application with air..."
+	@air
+
 run: build
 	@echo "Running the application..."
-	@air
+	@go run $(CMD)
 
 clean:
 	@echo "Cleaning up..."

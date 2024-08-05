@@ -1,7 +1,11 @@
 package routes
 
 import (
+	"flag"
+	"fmt"
+
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/docgen"
 	"github.com/xtasysensei/go-poll/internal/mymiddleware"
 	"github.com/xtasysensei/go-poll/pkg/handlers"
 	"github.com/xtasysensei/go-poll/pkg/handlers/poll"
@@ -9,8 +13,10 @@ import (
 	"github.com/xtasysensei/go-poll/pkg/handlers/vote"
 )
 
-func RegisterRoutes(apiRouter *chi.Mux) {
+var routes = flag.Bool("routes", false, "Generate router documentation")
 
+func RegisterRoutes(apiRouter *chi.Mux) {
+	flag.Parse()
 	apiRouter.Get("/", handlers.Index)
 	apiRouter.Get("/ping", handlers.Health)
 
@@ -23,19 +29,24 @@ func RegisterRoutes(apiRouter *chi.Mux) {
 
 		//poll routes
 		route.With(mymiddleware.WithUserID).Route("/polls", func(r chi.Router) {
-			//r.With(paginate).Get("/", ListArticles)
 			r.Post("/", poll.HandleCreatePoll)
 			r.Get("/", poll.RetrieveAllPolls)
 			r.Get("/{pollId}", poll.RetrievePollByID)
+			//r.With(paginate).Get("/", ListArticles)
 			// r.Get("/search", SearchArticles)
 
 			//vote
 			r.Post("/{pollId}/vote", vote.HandleCastVote)
 		})
 
-		// vote routes
-		route.With(mymiddleware.WithUserID)
-
 	})
+
+	if *routes {
+		fmt.Println(docgen.MarkdownRoutesDoc(apiRouter, docgen.MarkdownOpts{
+			ProjectPath: "go-mongo",
+			Intro:       "Welcome to the go-mongo generated docs.",
+		}))
+		return
+	}
 
 }

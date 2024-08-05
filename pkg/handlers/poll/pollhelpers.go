@@ -114,9 +114,11 @@ func GetPollByID(db *sql.DB, id int) (*models.Poll, error) {
 	return &poll, nil
 }
 
-func GetAllPolls(db *sql.DB) (*models.Poll, error) {
+func GetAllPolls(db *sql.DB) ([]models.Poll, error) {
 	query := `
-		SELECT * FROM polls
+		SELECT poll_id, user_id, title, description, created_at
+		FROM polls
+		ORDER BY poll_id
 	`
 	rows, err := db.Query(query)
 	if err != nil {
@@ -124,23 +126,25 @@ func GetAllPolls(db *sql.DB) (*models.Poll, error) {
 	}
 	defer rows.Close()
 
-	var polls models.Poll
+	var polls []models.Poll
 	for rows.Next() {
-		if err := rows.Scan(
-			&polls.PollID,
-			&polls.UserID,
-			&polls.Title,
-			&polls.Description,
-			&polls.CreatedAt,
-		); err != nil {
+		var poll models.Poll
+		err := rows.Scan(
+			&poll.PollID,
+			&poll.UserID,
+			&poll.Title,
+			&poll.Description,
+			&poll.CreatedAt,
+		)
+		if err != nil {
 			return nil, err
 		}
-
+		polls = append(polls, poll)
 	}
 
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
 
-	return &polls, nil
+	return polls, nil
 }

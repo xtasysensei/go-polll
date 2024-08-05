@@ -5,6 +5,7 @@ go 1.22
 require (
 	github.com/fatih/color v1.17.0
 	github.com/go-chi/chi/v5 v5.1.0
+	github.com/go-chi/docgen v1.3.0
 	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/golang-migrate/migrate/v4 v4.17.1
