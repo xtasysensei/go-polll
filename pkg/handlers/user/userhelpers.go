@@ -30,7 +30,11 @@ func GetUserByEmail(email string, db *sql.DB) (*models.User, error) {
 }
 func IsUsernameTaken(db *sql.DB, username string) (bool, error) {
 	var count int
-	query := "SELECT COUNT(*) FROM users WHERE username = $1"
+	query := `
+			SELECT COUNT(*)
+			FROM users 
+			WHERE username = $1
+			`
 	err := db.QueryRow(query, username).Scan(&count)
 	if err != nil {
 		return false, err

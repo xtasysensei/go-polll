@@ -53,7 +53,7 @@ func StartServer() (*http.Server, *chi.Mux) {
 	router.Use(mymiddleware.LoggingMiddleware)
 	router.Use(middleware.Recoverer)
 	router.Use(mymiddleware.ChangeMethod)
-	router.Use(mymiddleware.WithUserID)
+
 	//register routes
 	routes.RegisterRoutes(router)
 

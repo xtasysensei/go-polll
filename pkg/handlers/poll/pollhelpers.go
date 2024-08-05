@@ -1,4 +1,4 @@
-package main
+package poll
 
 import (
 	"database/sql"
@@ -52,4 +52,64 @@ func CreatePoll(db *sql.DB, userID int, poll *models.Poll, options []string) err
 	}
 
 	return nil
+}
+
+func GetPollByID(db *sql.DB, id int) (*models.Poll, error) {
+	// Define the query to get poll details, options, and vote counts
+	query := `
+		SELECT p.poll_id, p.user_id, p.title, p.description, p.created_at,
+				o.option_id, o.poll_id, o.text,
+				COALESCE(COUNT(v.vote_id), 0) AS number_of_votes
+		FROM polls p
+		LEFT JOIN options o ON p.poll_id = o.poll_id
+		LEFT JOIN votes v ON o.option_id = v.option_id
+		WHERE p.poll_id = $1
+		GROUP BY p.poll_id, o.option_id
+		ORDER BY o.option_id
+	`
+
+	// Prepare the statement
+	rows, err := db.Query(query, id)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var poll models.Poll
+	optionsMap := make(map[int][]models.Option)
+
+	// Iterate over the rows
+	for rows.Next() {
+		var option models.Option
+		if err := rows.Scan(
+			&poll.PollID,
+			&poll.UserID,
+			&poll.Title,
+			&poll.Description,
+			&poll.CreatedAt,
+			&option.OptionID,
+			&option.PollID,
+			&option.Text,
+			&option.NumberOfVotes,
+		); err != nil {
+			return nil, err
+		}
+
+		// Populate the poll options
+		if option.OptionID != 0 {
+			optionsMap[poll.PollID] = append(optionsMap[poll.PollID], option)
+		}
+	}
+
+	// Assign the options to the poll
+	if options, exists := optionsMap[poll.PollID]; exists {
+		poll.Options = options
+	}
+
+	// Check for errors from iterating over rows
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return &poll, nil
 }

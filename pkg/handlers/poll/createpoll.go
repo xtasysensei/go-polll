@@ -1,4 +1,4 @@
-package main
+package poll
 
 import (
 	"fmt"
@@ -26,7 +26,6 @@ func HandleCreatePoll(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Get user ID from context
 	userID, err := utils.GetUserIDFromContext(r.Context())
 	if err != nil {
 		utils.WriteError(w, http.StatusUnauthorized, err)

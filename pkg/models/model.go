@@ -1,6 +1,8 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 // Define your models here: type struct
 type User struct {
@@ -37,9 +39,10 @@ type CreatePollPayload struct {
 }
 
 type Option struct {
-	OptionID int    `json:"option_id"`
-	PollID   int    `json:"poll_id"`
-	Text     string `json:"text"`
+	OptionID      int    `json:"option_id"`
+	PollID        int    `json:"poll_id"`
+	Text          string `json:"text"`
+	NumberOfVotes int    `json:"number_of_votes"`
 }
 
 type Vote struct {
@@ -47,4 +50,9 @@ type Vote struct {
 	UserID    int       `json:"user_id"`
 	OptionID  int       `json:"option_id"`
 	Timestamp time.Time `json:"timestamp"`
+}
+
+type CastVotePayload struct {
+	UserID   int `json:"user_id"`
+	OptionID int `json:"option_id" validate:"required"`
 }
