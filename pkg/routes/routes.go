@@ -43,8 +43,8 @@ func RegisterRoutes(apiRouter *chi.Mux) {
 
 	if *routes {
 		fmt.Println(docgen.MarkdownRoutesDoc(apiRouter, docgen.MarkdownOpts{
-			ProjectPath: "go-mongo",
-			Intro:       "Welcome to the go-mongo generated docs.",
+			ProjectPath: "github.com/xtasysensei/go-poll",
+			Intro:       "Welcome to the go-poll generated docs.",
 		}))
 		return
 	}

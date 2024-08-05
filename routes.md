@@ -1,6 +1,6 @@
-# go-mongo
+# github.com/xtasysensei/go-poll
 
-Welcome to the go-mongo generated docs.
+Welcome to the go-poll generated docs.
 
 ## Routes
 
