@@ -10,7 +10,7 @@ import (
 	"github.com/xtasysensei/go-poll/pkg/utils"
 )
 
-func RetrievePoll(w http.ResponseWriter, r *http.Request) {
+func RetrievePollByID(w http.ResponseWriter, r *http.Request) {
 	pollIDStr := chi.URLParam(r, "pollId")
 	pollID, err := strconv.Atoi(pollIDStr)
 	if err != nil {
@@ -26,4 +26,14 @@ func RetrievePoll(w http.ResponseWriter, r *http.Request) {
 	}
 
 	utils.WriteJSON(w, http.StatusOK, poll)
+}
+
+func RetrieveAllPolls(w http.ResponseWriter, r *http.Request) {
+	polls, err := GetAllPolls(database.DB)
+	if err != nil {
+		utils.WriteError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	utils.WriteJSON(w, http.StatusOK, polls)
 }

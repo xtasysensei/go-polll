@@ -113,3 +113,34 @@ func GetPollByID(db *sql.DB, id int) (*models.Poll, error) {
 
 	return &poll, nil
 }
+
+func GetAllPolls(db *sql.DB) (*models.Poll, error) {
+	query := `
+		SELECT * FROM polls
+	`
+	rows, err := db.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var polls models.Poll
+	for rows.Next() {
+		if err := rows.Scan(
+			&polls.PollID,
+			&polls.UserID,
+			&polls.Title,
+			&polls.Description,
+			&polls.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return &polls, nil
+}

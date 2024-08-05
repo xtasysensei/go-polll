@@ -25,7 +25,8 @@ func RegisterRoutes(apiRouter *chi.Mux) {
 		route.With(mymiddleware.WithUserID).Route("/polls", func(r chi.Router) {
 			//r.With(paginate).Get("/", ListArticles)
 			r.Post("/", poll.HandleCreatePoll)
-			r.Get("/{pollId}", poll.RetrievePoll)
+			r.Get("/", poll.RetrieveAllPolls)
+			r.Get("/{pollId}", poll.RetrievePollByID)
 			// r.Get("/search", SearchArticles)
 
 			//vote
