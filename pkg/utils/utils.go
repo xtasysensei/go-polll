@@ -18,6 +18,7 @@ type key int
 const UserIDKey key = 0
 
 func GetUserIDFromContext(ctx context.Context) (int, error) {
+	fmt.Println(ctx)
 	value := ctx.Value(UserIDKey)
 	userID, ok := value.(int)
 	if !ok {
