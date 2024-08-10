@@ -49,7 +49,7 @@ This is the backend of a polling app written purely in Go.
 - [JWT](https://github.com/dgrijalva/jwt-go) for token generation
 - [PostgreSQL](https://www.postgresql.org/) for database
 - [Migrate (for DB migrations)](https://github.com/golang-migrate/migrate/tree/v4.17.0/cmd/migrate)
-- [Air](https://github.com/air-verse/air): Optional (For live reload during development. It can be installed with \`go install github.com/air-verse/air@latest\`)
+- [Air](https://github.com/air-verse/air): Optional (For live reload during development. It can be installed with `go install github.com/air-verse/air@latest`)
 
 ### Environment Variables
 
@@ -64,25 +64,24 @@ This is the backend of a polling app written purely in Go.
 
 ### Manual installation
 1. Clone the repository:
-    \`\`\`sh
+    ```sh
     git clone https://github.com/xtasysensei/go-poll.git
     cd go-poll
-    \`\`\`
+    ```
 
 2. Setup a PostgreSQL database based on the credentials in the `.env` file.
 
 3. Install `make` and run:
-    \`\`\`sh
+    ```sh
     make migrate up
-    \`\`\`
+    ```
 
 4. For complete functionality, use `make` and `air`, for live reload during development, then run:
-    \`\`\`sh
+    ```sh
     make run
     #or
     make run-air
-    \`\`\`
-
+   ```
 ### Docker
 
 A docker image is available at dockerhub via [go-poll]().
