@@ -26,6 +26,6 @@ func main() {
 		}
 	}()
 
-	log.Printf("%s is ready to handle requests at %s%s", color.BlueString("Server"), color.GreenString("localhost"), color.GreenString(srv.Addr))
+	log.Printf("%s is ready to handle requests at %s", color.BlueString("Server"), color.GreenString(srv.Addr))
 	server.GracefulShutdown(srv)
 }
