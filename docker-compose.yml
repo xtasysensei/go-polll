@@ -1,10 +1,7 @@
 services:
   app:
     container_name: go-poll
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: go-poll-app
+    build: .
     environment:
       - SERVER_PORT=${SERVER_PORT}
       - POSTGRES_USER=${POSTGRES_USER}
@@ -15,8 +12,6 @@ services:
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
     restart: on-failure
-    volumes:
-      - .:/app
     depends_on:
       - postgresdb
     networks:
